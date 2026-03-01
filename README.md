@@ -1,27 +1,52 @@
-# Semeval-Task-13-Subtask-A
-This repository contains the official implementation for our submission to SemEval-2026 Task 13(Subtask A). Our system focuses on Out-of-Distribution (OOD) Robustness by prioritizing structural code logic over surface-level stylistic signatures.
+This repository contains the official implementation for our submission to SemEval-2026 Task 13 (Subtask A). Our system focuses on Out-of-Distribution (OOD) Robustness by prioritizing structural code logic over surface-level stylistic signatures.
 
-Key Highlights
-Generator-Based Data Splitting: We avoided the "Validation Trap" (random splitting) by holding out 13 specific generator families (Llama, DeepSeek, Yi) for pure OOD testing.
+Prerequisites & Requirements
+Before running the scripts, ensure your environment meets the following specifications:
 
-Adversarial Obfuscation: Implemented an 80% augmentation rate using Identifier Obfuscation to rename variables and Normalization to remove comments/whitespace.
+Python Version: 3.10
 
-Seen & Unseen Languages: Demonstrated generalization from training languages (Python, Java, C++) to unseen test languages (Go, PHP, C#, C, and JavaScript).
+Core Libraries: * torch==2.1.0
 
-Performance
-Official Test F1: 0.439 (62% improvement over our baseline).
+transformers==4.36.0
+
+pandas, numpy, scikit-learn, datasets
+
+Hardware: CUDA-enabled GPU (recommended for training and fast inference).
+
+ Key Methodology Highlights
+1. Generator-Based Data Splitting
+We avoided the "Validation Trap" (standard random splitting) which often leads to over-optimistic results due to generator leakage. Instead, we held out 13 specific generator families—Llama, DeepSeek, and Yi—exclusively for OOD validation.
+
+2. Adversarial Obfuscation
+To force the model to learn logic rather than "handwriting," we implemented an 80% augmentation rate including:
+
+Identifier Obfuscation: Renaming variables to generic tokens (e.g., var_0).
+
+Normalization: Removing single-line comments, docstrings, and extra whitespace.
+
+3. Seen & Unseen Languages
+Our model demonstrates strong cross-lingual generalization, training on Python, Java, and C++, while successfully evaluating on unseen languages: Go, PHP, C#, C, and JavaScript.
+
+ Reproduction Guide
+To reproduce our Attempt 4 results (the configuration used for the final submission):
+
+Model Base: microsoft/codebert-base
+
+Hyperparameters: * Learning Rate: 1.5e-5
+
+Dropout: 0.3
+
+Weight Decay: 0.02
+
+Effective Batch Size: 48
+
+Early Stopping: Training must be halted strictly at Step 1,000.
+
+Why Step 1,000? Our findings proved that 48,000 highly regularized samples outperform 500,000 unregularized samples in OOD scenarios by preventing representation collapse.
+
+📊Performance & Results
+Official Test F1: 0.439 (A 62% improvement over our unregularized baseline).
 
 Leaderboard Rank: 51st.
 
-Finding: Proved that 48,000 highly regularized samples outperform 500,000 unregularized samples in OOD scenarios.
-
-Reproduction Guide
-To reproduce our Attempt 4 results:
-
-Model: microsoft/codebert-base
-
-Hyperparameters: LR 1.5e-5, Dropout 0.3, Weight Decay 0.02.
-
-Early Stopping: Halt training strictly at Step 1,000 (Effective batch size 48).
-
-Requirements: Python 3.10, PyTorch 2.1.0, Transformers 4.36.0.
+Qualitative Note: The system excels at structural logic detection but remains challenged by short, boilerplate code snippets.
