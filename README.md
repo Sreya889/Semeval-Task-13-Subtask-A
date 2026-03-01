@@ -44,7 +44,7 @@ Early Stopping: Training must be halted strictly at Step 1,000.
 
 Why Step 1,000? Our findings proved that 48,000 highly regularized samples outperform 500,000 unregularized samples in OOD scenarios by preventing representation collapse.
 
-📊Performance & Results
+Performance & Results
 Official Test F1: 0.439 (A 62% improvement over our unregularized baseline).
 
 Leaderboard Rank: 51st.
