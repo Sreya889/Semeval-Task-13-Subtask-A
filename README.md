@@ -1,5 +1,5 @@
 # Semeval-Task-13-Subtask-A
-fficial implementation for Subtask A. Our system focuses on Out-of-Distribution (OOD) Robustness by prioritizing structural code logic over surface-level stylistic signatures.
+official implementation for Subtask A. Our system focuses on Out-of-Distribution (OOD) Robustness by prioritizing structural code logic over surface-level stylistic signatures.
 
 Key Highlights
 Generator-Based Data Splitting: We avoided the "Validation Trap" (random splitting) by holding out 13 specific generator families (Llama, DeepSeek, Yi) for pure OOD testing.
